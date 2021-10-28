@@ -23,7 +23,7 @@
         <a
           class="inline-block px-4 py-2 bg-white text-gray font-bold rounded hover:opacity-80"
           href="https://www.businesstoday.com.tw/article/category/183027/post/202110270036/"
-          target="_blank">永續城市戰鬥記</a>
+          target="_blank">永續城市戰鬥記<i class="fa fa-chevron-circle-right ml-1" /></a>
       </div>
     </article>
   </div>
