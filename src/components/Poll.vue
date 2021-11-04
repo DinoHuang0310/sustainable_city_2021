@@ -14,7 +14,7 @@
       </ul>
       <div class="bg-white p-2 sm:p-4 sm:pt-8">
         <div :class="this.target === 'municipality' ? 'relative pb-full sm:pb-4/10' : 'relative pb-18/10 md:pb-8/10'">
-          <ECharts class="absolute w-full h-full" :options="options" autoresize />
+          <ECharts class="absolute w-full h-full" :options="chartOption" autoresize />
         </div>
         <p class="my-4">{{ chartData[active].description }}</p>
       </div>
@@ -45,51 +45,12 @@ export default {
   data() {
     return {
       active: 0,
-      target: '',
-      options: null
+      target: ''
     }
   },
-  watch: {
-    active() {
-      this.setChartOption();
-    },
-    target() {
-      this.setChartOption();
-    }
-  },
-  methods: {
-    handleSwitchVal(childValue) {
-      this.target = childValue ? 'municipality' : 'county';
-    },
-    getChartTabs() {
-      let arr = [];
-      for(let i = 0; i < this.chartData.length; i++) {
-        arr.push(this.chartData[i].name);
-      }
-      return arr;
-    },
-    createSeries() {
-      let arr = [];
-      const targetData = this.chartData[this.active];
-      for(let i = 0; i < targetData[this.target].length; i++) {
-        arr.push(
-          {
-            name: targetData.keyword[i],
-            type: 'bar',
-            stack: 'total',
-            // label: {
-            //   show: true,
-            //   position: 'insideRight',
-            //   formatter: `{c}%`
-            // },
-            data: targetData[this.target][i]
-          }
-        );
-      }
-      return arr;
-    },
-    setChartOption() {
-      this.options = {
+  computed: {
+    chartOption: function() {
+      return {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -132,8 +93,34 @@ export default {
       };
     }
   },
-  mounted() {
-    this.setChartOption();
+  methods: {
+    handleSwitchVal(childValue) {
+      this.target = childValue ? 'municipality' : 'county';
+    },
+    getChartTabs() {
+      let arr = [];
+      for(let i = 0; i < this.chartData.length; i++) {
+        arr.push(this.chartData[i].name);
+      }
+      return arr;
+    },
+    createSeries() {
+      let arr = [];
+      const targetData = this.chartData[this.active];
+      if(this.target) {
+        for(let i = 0; i < targetData[this.target].length; i++) {
+          arr.push(
+            {
+              name: targetData.keyword[i],
+              type: 'bar',
+              stack: 'total',
+              data: targetData[this.target][i]
+            }
+          );
+        }
+      }
+      return arr;
+    }
   }
 }
 </script>
