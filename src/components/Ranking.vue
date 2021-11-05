@@ -2,7 +2,7 @@
   <ContentWrapper :setBackground="{type: 'bgcolor', value: '#f8f5f4'}">
     <div class="w-11/12 md:w-4/5 2xl:w-7/10 mx-auto max-w-1280">
       <h2 class="mb-6 text-2xl md:text-4xl">永續城市獎項名單</h2>
-      <SwitchBtn v-on:handleSwitchVal="handleSwitchVal" />
+      <SwitchBtn v-on:handleSwitchVal="handleSwitchVal" :option="switchOption" />
       <div class="bg-white p-4 md:p-8">
         <table class="mobile:block mobile:w-full w-11/12 mx-auto">
           <tbody class="mobile:block">
@@ -57,6 +57,16 @@ export default {
   data() {
     return {
       target: '',
+      switchOption: {
+        left: {
+          name: '六都',
+          value: 'municipality'
+        },
+        right: {
+          name: '非六都',
+          value: 'county'
+        }
+      },
       winners: [
         {
           name: '「永續城市特優獎」',
@@ -204,7 +214,7 @@ export default {
   },
   methods: {
     handleSwitchVal(childValue) {
-      this.target = childValue ? 'municipality' : 'county';
+      this.target = childValue;
     }
   }
 }
