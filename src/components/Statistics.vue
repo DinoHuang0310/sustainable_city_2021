@@ -3,7 +3,7 @@
     <div class="w-11/12 md:w-4/5 2xl:w-7/10 mx-auto max-w-1280">
       <h2 class="mb-6 text-2xl md:text-4xl">永續城市評比數據指標</h2>
       <p class="mb-6">本調查結合數據指標、民意調查結果，評比總分計算方式為70% × 數據指標 + 30% × 民意調查；數據指標以官方公開數據為依據。</p>
-      <SwitchBtn v-on:handleSwitchVal="handleSwitchVal" />
+      <SwitchBtn v-on:handleSwitchVal="handleSwitchVal" :option="switchOption" />
       <ul class="flex justify-center flex-wrap my-6">
         <li v-for="(tabs, index) in getChartTabs()" :key="index" class="text-white tracking-wide m-1">
           <label :class="active === index ? 'bg-green cursor-pointer px-2 py-1' : 'bg-lightgray cursor-pointer px-2 py-1'">
@@ -46,7 +46,17 @@ export default {
     return {
       active: 0,
       target: '',
-      options: null
+      options: null,
+      switchOption: {
+        left: {
+          name: '六都',
+          value: 'municipality'
+        },
+        right: {
+          name: '非六都',
+          value: 'county'
+        }
+      }
     }
   },
   watch: {
@@ -59,7 +69,7 @@ export default {
   },
   methods: {
     handleSwitchVal(childValue) {
-      this.target = childValue ? 'municipality' : 'county';
+      this.target = childValue;
     },
     getListData() {
       return this.chartData[this.active][this.target];

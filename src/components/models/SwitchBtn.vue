@@ -2,14 +2,14 @@
   <div class="flex justify-center items-center my-6">
     <div class="relative">
       <button class="absolute left-0 top-1/2 -ml-2 transform -translate-x-full -translate-y-1/2" @click="handleClick(true)">
-        <span :class="active ? 'text-green font-bold' : 'text-lightgray'">六都</span>
+        <span :class="active ? 'text-green font-bold' : 'text-lightgray'">{{ option.left.name }}</span>
       </button>
       <label>
         <div :class="active ? 'switch-btn' : 'switch-btn right'" />
         <input type="checkbox" v-model="active" class="hidden" />
       </label>
       <button class="absolute right-0 top-1/2 -mr-2 transform translate-x-full -translate-y-1/2" @click="handleClick(false)">
-        <span :class="!active ? 'text-green font-bold' : 'text-lightgray'">非六都</span>
+        <span :class="!active ? 'text-green font-bold' : 'text-lightgray'">{{ option.right.name }}</span>
       </button>
     </div>
   </div>
@@ -17,14 +17,33 @@
 
 <script>
 export default {
+  props: {
+    option: {
+      type: Object,
+      default: function() {
+        return {
+          left: {
+            name: '',
+            value: true
+          },
+          right: {
+            name: '',
+            value: false
+          },
+          default: 'left'
+        }
+      }
+    }
+  },
   data() {
     return {
-      active: true
+      active: null
     }
   },
   watch: {
     active: function() {
-      this.$emit('handleSwitchVal', this.active);
+      const val = this.active ? this.option.left.value : this.option.right.value;
+      this.$emit('handleSwitchVal', val);
     }
   },
   methods: {
@@ -33,7 +52,7 @@ export default {
     }
   },
   mounted() {
-    this.$emit('handleSwitchVal', this.active);
+    this.active = this.option.default === 'right' ? false : true;
   }
 }
 </script>

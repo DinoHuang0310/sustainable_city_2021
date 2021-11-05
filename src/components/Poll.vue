@@ -3,7 +3,7 @@
     <div class="w-11/12 md:w-4/5 2xl:w-7/10 mx-auto max-w-1280">
       <h2 class="mb-6 text-2xl md:text-4xl">永續城市評比民調結果</h2>
       <p class="mb-6">《今周刊》與第三方調查機構「畢肯市場研究」合作，針對各縣市統計指標、民意調查兩部分進行評分。統計指標依據聯合國17項永續發展目標為基礎，選出58項指標，加上對應面向的民意調查結果，綜合評比出6都與15縣市的「永續發展城市獎」，並選出環境力、社會力、經濟力特別傑出獎。</p>
-      <SwitchBtn v-on:handleSwitchVal="handleSwitchVal" />
+      <SwitchBtn v-on:handleSwitchVal="handleSwitchVal" :option="switchOption" />
       <ul class="flex justify-center flex-wrap my-6">
         <li v-for="(tabs, index) in getChartTabs()" :key="index" class="text-white tracking-wide m-1">
           <label :class="active === index ? 'bg-green cursor-pointer px-2 py-1' : 'bg-lightgray cursor-pointer px-2 py-1'">
@@ -45,7 +45,17 @@ export default {
   data() {
     return {
       active: 0,
-      target: ''
+      target: '',
+      switchOption: {
+        left: {
+          name: '六都',
+          value: 'municipality'
+        },
+        right: {
+          name: '非六都',
+          value: 'county'
+        }
+      }
     }
   },
   computed: {
@@ -95,7 +105,7 @@ export default {
   },
   methods: {
     handleSwitchVal(childValue) {
-      this.target = childValue ? 'municipality' : 'county';
+      this.target = childValue;
     },
     getChartTabs() {
       let arr = [];
