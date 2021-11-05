@@ -14,7 +14,7 @@
       </ul>
       <div class="bg-white p-2 sm:p-4 sm:pt-8">
         <div :class="this.target === 'municipality' ? 'relative pb-8/10 md:pb-3/10' : 'relative pb-15/10 md:pb-6/10'">
-          <ECharts class="absolute w-full h-full" :options="options" autoresize />
+          <ECharts class="absolute w-full h-full" :options="chartOption" autoresize />
         </div>
         <p class="my-4">{{ chartData[active].description }}</p>
       </div>
@@ -46,7 +46,6 @@ export default {
     return {
       active: 0,
       target: '',
-      options: null,
       switchOption: {
         left: {
           name: '六都',
@@ -59,31 +58,10 @@ export default {
       }
     }
   },
-  watch: {
-    active() {
-      this.setChartOption();
-    },
-    target() {
-      this.setChartOption();
-    }
-  },
-  methods: {
-    handleSwitchVal(childValue) {
-      this.target = childValue;
-    },
-    getListData() {
-      return this.chartData[this.active][this.target];
-    },
-    getChartTabs() {
-      let arr = [];
-      for(let i = 0; i < this.chartData.length; i++) {
-        arr.push(this.chartData[i].name);
-      }
-      return arr;
-    },
-    setChartOption() {
+  computed: {
+    chartOption: function() {
       const unit = this.chartData[this.active].unit;
-      this.options = {
+      return {
         tooltip: {
           trigger: 'axis',
           axisPointer: {
@@ -116,13 +94,6 @@ export default {
         series: [
           {
             type: 'bar',
-            // label: {
-            //   normal: {
-            //     show: true,
-            //     position: 'insideRight',
-            //     offset: [-5, 0]
-            //   }
-            // },
             data: this.getListData(this.active),
             itemStyle: {
               normal: {
@@ -134,8 +105,20 @@ export default {
       }
     }
   },
-  mounted() {
-    this.setChartOption();
+  methods: {
+    handleSwitchVal(childValue) {
+      this.target = childValue;
+    },
+    getListData() {
+      return this.chartData[this.active][this.target];
+    },
+    getChartTabs() {
+      let arr = [];
+      for(let i = 0; i < this.chartData.length; i++) {
+        arr.push(this.chartData[i].name);
+      }
+      return arr;
+    }
   }
 }
 </script>
